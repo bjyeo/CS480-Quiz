@@ -1,5 +1,5 @@
 from typing import List
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class Quiz(BaseModel):
     id: int
@@ -12,5 +12,4 @@ class Quiz(BaseModel):
     option_4: str
     correct_answer: List[str]
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

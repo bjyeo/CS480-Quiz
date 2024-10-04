@@ -10,15 +10,3 @@ class QuizBase(BaseModel):
     option_3: str
     option_4: str
     correct_answer: List[str]
-
-class QuizCreate(QuizBase):
-    pass
-
-class QuizInDB(QuizBase):
-    id: int
-
-    class Config:
-        from_attributes = True
-
-class Quiz(QuizInDB):
-    pass

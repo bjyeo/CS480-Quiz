@@ -1,6 +1,6 @@
-from fastapi import APIRouter, HTTPException, Query
-from typing import List
-from app.core.schemas.quiz import QuizBase
+from fastapi import APIRouter, HTTPException, Query, Body
+from typing import List, Dict
+from app.core.schemas.quiz import QuizBase, QuizQuestion, QuizSubmission
 from app.core.services.supabase import supabase_client
 from app.core.services.quiz_generator import generate_quiz
 
@@ -26,10 +26,9 @@ async def get_questions_by_subcategory(sub: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
     
-@router.get("/generate-quiz/{subcategory}", response_model=List[QuizBase])
+@router.get("/generate-quiz/{subcategory}", response_model=List[QuizQuestion])
 async def generate_user_quiz(subcategory: str, user_id: int = Query(...)):
     try:
-        # Verify that the user exists
         user_response = supabase_client.table("users").select("user_id").eq("user_id", user_id).execute()
         if not user_response.data:
             raise HTTPException(status_code=404, detail="User not found")
@@ -38,5 +37,19 @@ async def generate_user_quiz(subcategory: str, user_id: int = Query(...)):
         return quiz
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+    
+@router.post("/submit-quiz/{subcategory}", response_model=Dict[str, int])
+async def submit_quiz(subcategory: str, user_id: int = Query(...), submission: QuizSubmission = Body(...)):
+    try:
+        correct_quiz = generate_quiz(subcategory, user_id)
+        
+        score = sum(1 for submitted, correct in zip(submission.answers, correct_quiz) 
+                    if submitted == correct.correct_answer)
+        
+        supabase_client.table("users").update({f"{subcategory}_score": score}).eq("user_id", user_id).execute()
+        
+        return {"score": score}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")

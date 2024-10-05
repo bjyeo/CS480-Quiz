@@ -22,6 +22,7 @@ def test_generate_quiz():
         assert "option_2" in question
         assert "option_3" in question
         assert "option_4" in question
+        assert "correct_answer" in question
         assert question["sub"] == subcategory
 
 # def test_generate_quiz_different_users():

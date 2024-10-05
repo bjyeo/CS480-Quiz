@@ -1,6 +1,6 @@
-from fastapi import APIRouter, HTTPException, Query, Body
-from typing import List, Dict
-from app.core.schemas.quiz import QuizBase, QuizQuestion, QuizSubmission
+from fastapi import APIRouter, HTTPException, Query
+from typing import List
+from app.core.schemas.quiz import QuizBase
 from app.core.services.supabase import supabase_client
 from app.core.services.quiz_generator import generate_quiz
 
@@ -45,32 +45,6 @@ async def generate_user_quiz(subcategory: str, user_email: str = Query(...)):
         return quiz
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"An error occurred: {str(e)}")
-
-
-@router.post("/submit-quiz/{subcategory}", response_model=Dict[str, str])
-async def submit_quiz(subcategory: str, user_email: str = Query(...), submission: QuizSubmission = Body(...)):
-    try:
-        correct_quiz = generate_quiz(subcategory, user_email)
-
-        new_score = sum(1 for submitted, correct in zip(submission.answers, correct_quiz)
-                        if submitted == correct.correct_answer)
-
-        user_response = supabase_client.table("users").select(
-            f"{subcategory}_score").eq("user_email", user_email).execute()
-        if not user_response.data:
-            raise HTTPException(status_code=404, detail="User not found")
-
-        current_score = user_response.data[0].get(f"{subcategory}_score", 0)
-
-        if new_score > current_score:
-            supabase_client.table("users").update({f"{subcategory}_score": new_score}).eq(
-                "user_email", user_email).execute()
-            return {"score": new_score, "improved": True}
-        else:
-            return {"score": new_score, "improved": False}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"An error occurred: {str(e)}")

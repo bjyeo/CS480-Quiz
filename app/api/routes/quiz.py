@@ -45,11 +45,19 @@ async def submit_quiz(subcategory: str, user_id: int = Query(...), submission: Q
     try:
         correct_quiz = generate_quiz(subcategory, user_id)
         
-        score = sum(1 for submitted, correct in zip(submission.answers, correct_quiz) 
-                    if submitted == correct.correct_answer)
+        new_score = sum(1 for submitted, correct in zip(submission.answers, correct_quiz) 
+                        if submitted == correct.correct_answer)
         
-        supabase_client.table("users").update({f"{subcategory}_score": score}).eq("user_id", user_id).execute()
+        user_response = supabase_client.table("users").select(f"{subcategory}_score").eq("user_id", user_id).execute()
+        if not user_response.data:
+            raise HTTPException(status_code=404, detail="User not found")
         
-        return {"score": score}
+        current_score = user_response.data[0].get(f"{subcategory}_score", 0)
+        
+        if new_score > current_score:
+            supabase_client.table("users").update({f"{subcategory}_score": new_score}).eq("user_id", user_id).execute()
+            return {"score": new_score, "improved": True}
+        else:
+            return {"score": new_score, "improved": False}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")

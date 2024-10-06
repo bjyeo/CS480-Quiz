@@ -1,7 +1,4 @@
 .env
+.secrets
 __pycache__
 .pytest_cache/
-
-# OpenSSL
-server.crt
-server.key

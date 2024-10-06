@@ -24,19 +24,3 @@ def test_generate_quiz():
         assert "option_4" in question
         assert "correct_answer" in question
         assert question["sub"] == subcategory
-
-# def test_generate_quiz_different_users():
-#     subcategory = "SSRF"
-#     user_email = "test@email.com"
-#     user_email = "bao@jie.com"
-
-#     response1 = client.get(f"/api/v1/generate-quiz/{subcategory}?user_email={user_email}")
-#     response2 = client.get(f"/api/v1/generate-quiz/{subcategory}?user_email={user_email}")
-
-#     assert response1.status_code == 200
-#     assert response2.status_code == 200
-
-#     quiz1 = response1.json()
-#     quiz2 = response2.json()
-
-#     assert quiz1 != quiz2

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException
 from typing import List
 from app.core.schemas.quiz import QuizBase
 from app.core.services.supabase import supabase_client
@@ -35,14 +35,9 @@ async def get_questions_by_subcategory(sub: str):
 
 
 @router.get("/generate-quiz/{subcategory}", response_model=List[QuizBase])
-async def generate_user_quiz(subcategory: str, user_email: str = Query(...)):
+async def generate_user_quiz(subcategory: str):
     try:
-        user_response = supabase_client.table("users").select(
-            "user_email").eq("user_email", user_email).execute()
-        if not user_response.data:
-            raise HTTPException(status_code=404, detail="User not found")
-
-        quiz = generate_quiz(subcategory, user_email)
+        quiz = generate_quiz(subcategory)
         return quiz
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

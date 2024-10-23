@@ -77,3 +77,4 @@ async def get_top_department_rankings(limit: int = 10):
         return response.data if response.data else []
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+

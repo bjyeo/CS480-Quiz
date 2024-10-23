@@ -1,23 +1,23 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime
-from uuid import UUID
+import uuid
 
-class LeaderboardEntry(BaseModel):
+
+class IndividualLeaderboardEntry(BaseModel):
     rank: int
-    user_id: int
-    user_email: EmailStr
-    team_id: Optional[UUID]
-    department: Optional[str]
-    leaderboard_score: int
-    last_updated: datetime
+    user_email: str
+    endless_score: int
+    team_id: Optional[uuid.UUID] = None
+    department: Optional[str] = None
+
 
 class TeamLeaderboardEntry(BaseModel):
     rank: int
-    team_id: UUID
-    team_name: str
-    average_score: float
+    team_id: uuid.UUID
+    total_score: int
 
-class ScoreUpdate(BaseModel):
-    user_email: EmailStr
-    score: int
+
+class DepartmentLeaderboardEntry(BaseModel):
+    rank: int
+    department: str
+    total_score: int

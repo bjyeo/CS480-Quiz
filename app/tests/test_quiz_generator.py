@@ -6,9 +6,7 @@ client = TestClient(app)
 
 def test_generate_quiz():
     subcategory = "SSRF"
-    user_email = "test@email.com"
-    response = client.get(
-        f"/api/v1/generate-quiz/{subcategory}?user_email={user_email}")
+    response = client.get(f"/api/v1/generate-quiz/{subcategory}")
 
     assert response.status_code == 200
     quiz_questions = response.json()
@@ -24,3 +22,8 @@ def test_generate_quiz():
         assert "option_4" in question
         assert "correct_answer" in question
         assert question["sub"] == subcategory
+
+    response2 = client.get(f"/api/v1/generate-quiz/{subcategory}")
+    quiz_questions2 = response2.json()
+    assert quiz_questions != quiz_questions2, \
+        "Two consecutive quizzes should be different"

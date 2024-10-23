@@ -1,27 +1,42 @@
 from app.core.services.supabase import supabase_client
 from fastapi import HTTPException
-# from typing import Optional
 
 
-async def get_top_players(limit: int = 10):
-    return supabase_client.from_("users").select("*").order('endless_score', desc=True).limit(limit).execute()
+async def get_top_individual_players(limit: int = 10):
+    return supabase_client.from_("individual_leaderboard")\
+        .select("*")\
+        .limit(limit)\
+        .execute()
 
 
-async def get_player_rank(user_email: str):
+async def get_individual_player_rank(user_email: str):
     try:
-        all_players = supabase_client.from_("users").select(
-            "*").order('endless_score', desc=True).execute()
+        response = supabase_client.from_("individual_leaderboard")\
+            .select("*")\
+            .eq("user_email", user_email)\
+            .execute()
 
-        for idx, player in enumerate(all_players.data, 1):
-            if player['user_email'] == user_email:
-                player['rank'] = idx
-                return type('Response', (), {'data': player})()
-
-        raise HTTPException(status_code=404, detail="Player not found")
+        if not response.data or len(response.data) == 0:
+            raise HTTPException(status_code=404, detail="Player not found")
+        return response
     except HTTPException as he:
         raise he
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+async def get_top_teams(limit: int = 10):
+    return supabase_client.from_("team_leaderboard")\
+        .select("*")\
+        .limit(limit)\
+        .execute()
+
+
+async def get_top_departments(limit: int = 10):
+    return supabase_client.from_("department_leaderboard")\
+        .select("*")\
+        .limit(limit)\
+        .execute()
 
 
 async def update_player_score(user_id: int, new_score: int):

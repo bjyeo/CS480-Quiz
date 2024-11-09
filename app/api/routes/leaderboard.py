@@ -18,7 +18,8 @@ router = APIRouter()
 # Individual leaderboard routes
 
 
-@router.get("/leaderboard/individual/top", response_model=List[IndividualLeaderboardEntry])
+@router.get("/leaderboard/individual/top",
+            response_model=List[IndividualLeaderboardEntry])
 async def get_top_individuals(limit: int = 10):
     try:
         response = await get_top_individual_players(limit)
@@ -31,7 +32,8 @@ async def get_top_individuals(limit: int = 10):
             status_code=500, detail=f"An error occurred: {str(e)}")
 
 
-@router.get("/leaderboard/individual/player/{user_email}", response_model=IndividualLeaderboardEntry)
+@router.get("/leaderboard/individual/player/{user_email}",
+            response_model=IndividualLeaderboardEntry)
 async def get_individual_ranking(user_email: str):
     try:
         response = await get_individual_player_rank(user_email)
@@ -48,6 +50,7 @@ async def get_individual_ranking(user_email: str):
 async def update_individual_score(user_id: int, new_score: int):
     try:
         response = await update_player_score(user_id, new_score)
+        print(response.data)
         if not response:
             raise HTTPException(status_code=404, detail="User not found")
         return {"message": "Score updated successfully"}
@@ -70,11 +73,11 @@ async def get_top_team_rankings(limit: int = 10):
 # Department leaderboard routes
 
 
-@router.get("/leaderboard/department/top", response_model=List[DepartmentLeaderboardEntry])
+@router.get("/leaderboard/department/top",
+            response_model=List[DepartmentLeaderboardEntry])
 async def get_top_department_rankings(limit: int = 10):
     try:
         response = await get_top_departments(limit)
         return response.data if response.data else []
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-

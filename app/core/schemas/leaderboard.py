@@ -1,19 +1,17 @@
 from pydantic import BaseModel
 from typing import Optional
-import uuid
 
 
 class IndividualLeaderboardEntry(BaseModel):
     rank: int
     user_email: str
     endless_score: int
-    team_id: Optional[uuid.UUID] = None
-    department: Optional[str] = None
+    team_name: Optional[str] = None
 
 
 class TeamLeaderboardEntry(BaseModel):
     rank: int
-    team_id: uuid.UUID
+    team_name: str
     total_score: int
 
 

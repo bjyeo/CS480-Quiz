@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
-import uuid
 
 
 class UserBase(BaseModel):
@@ -12,7 +11,7 @@ class UserBase(BaseModel):
     auth_score: int = 0
     ssrf_score: int = 0
     endless_score: int = 0
-    team_id: Optional[uuid.UUID] = None
+    team_name: Optional[str] = None
     department: Optional[str] = None
     last_updated: datetime = datetime.now()
 

@@ -45,8 +45,15 @@ async def update_player_score(user_id: int, new_score: int):
             {"endless_score": new_score}
         ).eq("user_id", user_id).execute()
 
-        if not response.data:
-            return None
+        if not response.data or len(response.data) == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        # If user exists, proceed with update
+        response = supabase_client.from_("users")\
+            .update({"endless_score": new_score})\
+            .eq("user_id", user_id)\
+            .execute()
+
         return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

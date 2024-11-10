@@ -1,0 +1,57 @@
+To generate a JSON file with sample internal emails for a fictional bank, simulate both intra-department and inter-department communications based on the following guidelines:
+
+Follow a similar writing style to the enron emails: Here are 5 in context examples.
+{ 
+  "emails": [ 
+    { 
+      "from": "sara.shackleton@enron.com", 
+      "to": "sibyl.peyer@gs.com", 
+      "subject": "New Account Agreement", 
+      "content": "Sibyl:\n\nDid you want me to dupe the Enron Corp. documents, i.e., change signature lines? I have a copy of the Corporate Account Agreement (including the Schedule) but not the Repo.\n\nThanks.\nSara\n\nSara Shackleton\nEnron Wholesale Services\n1400 Smith Street, EB3801a\nHouston, TX 77002\nPh: (713) 853-5620\nFax: (713) 646-3490" 
+    }, 
+    { 
+      "from": "sibyl.peyer@gs.com", 
+      "to": "sara.shackleton@enron.com", 
+      "subject": "RE: New Account Agreement", 
+      "content": "Hi Sara,\nNo one here seems to know anything about ERMT Corp.\nCan you confirm it's not a regulated entity? (Public Utility, etc.)\nCan we get a copy of its Cert. of Incorporation (whatever you have in your files is fine.)\nAnything else you can tell me about the activity of the entity would also be helpful.\n\nThanks." 
+    }, 
+    { 
+      "from": "sibyl.peyer@gs.com", 
+      "to": "sara.shackleton@enron.com", 
+      "subject": "RE: New Account Agreement", 
+      "content": "Tried to call with more questions:\nWhere is the money coming from?\nWhy is this trade being done out of this entity and not Enron Corp like the others?" 
+    }, 
+    { 
+      "from": "rrga-l@list.rtowest.org", 
+      "to": "rrga-l@list.rtowest.org", 
+      "subject": "Confirmation/Agenda for RRG Meeting on June 27", 
+      "content": "Hello, Everyone -\n\nThis confirms our Regional Representatives Group (RRG) meeting for next Wednesday, June 27, at the NEW LOCATION. We will meet at the Shilo Inn - Portland Airport, 11701 NW Airport Way, from 8:30 a.m. to 12:30 p.m. (We'll end sooner if we can.) The meeting will be held in the Mt. Rainer and Mt. Hood Rooms, and the reader boards will give directions at the hotel and convention center entrances. A continental breakfast will be available at 8:00 a.m.\n\nAlso, through Judy Welch's excellent advocacy, the Shilo is holding a block of rooms for $94/night if you identify yourselves as being there for RTO West. The regular price is $109.\n\nThis meeting is informational and will focus primarily on the items RTO West intends to submit to FERC by August 31. Here's our working agenda:\n\n1. Update on \"illustrative\" pricing model\n2. Planning/expansion update\n3. Report on Congestion Management\n4. Report on FERC Interregional Technical Conference on June 19\n5. Benefit Cost update\n\nI look forward to seeing you next Wednesday.\n\n- Bud" 
+    }, 
+    { 
+      "from": "elizabeth.brown@enron.com", 
+      "to": "shelley.corman@enron.com", 
+      "subject": "NNG Top 10 Customers - REVISED", 
+      "content": "Here is the revised list based on our discussions regarding IES.\n\nThanks,\nElizabeth" 
+    } 
+  ] 
+}
+
+Real and Diverse Names: Use real names and diverse identities for the senders and recipients (no placeholders).
+Date Range: Dates should range between August 2024 and November 2025.
+Realistic Content: Email content should be realistic and cover typical scenarios in a banking context.
+Intra- and Inter-Department Mix: Include emails for both intra-department (within a single team, like project updates or task assignments) and inter-department (requests for resources, reports, collaboration, budget reviews) scenarios.
+Format as JSON: Use the following JSON structure for the final output:
+json
+
+    { 
+      "sender_email": "isabellakim.sec37@zbs.com", 
+      "recipient": "liamwilson.it45@zbs.com", 
+      "subject": "Cybersecurity Vulnerability Assessment", 
+      "body": "Dear Liam,\n\nThe Security team has recently completed a comprehensive vulnerability assessment of our network infrastructure. We've identified several potential weaknesses that require immediate attention from the IT
+department.\n\nCould we schedule a meeting early next week to go over the findings and develop an action plan? It's crucial that we address these vulnerabilities promptly to maintain the integrity of our systems and protect our clients' data.\n\nPlease let me know your availability, and I'll set up the meeting with the relevant team members.\n\nBest regards,\nIsabella Kim\nChief Information Security Officer", 
+      "date": "2025-07-18" 
+    }
+
+Email Length Variety: Provide a mix of email lengths, between 60 and 200 words.
+Important: Return only a single email object in JSON format with the fields "from", "to", "subject", and "content". Do not wrap the response in an "emails" array or add any additional fields.
+Considering the previous instructions, rewrite the following email:
